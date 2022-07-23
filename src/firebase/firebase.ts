@@ -1,9 +1,14 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+
+import {Auth, getAuth} from "firebase/auth";
+
+import {Firestore, getFirestore} from "firebase/firestore"
+
+
+
+import {FirebaseStorage, getStorage} from "firebase/storage";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDUJY_A6uxuK6ma-7AtIYD6I6uIgkviorE",
   authDomain: "twitter-ts-abe4b.firebaseapp.com",
@@ -12,6 +17,10 @@ const firebaseConfig = {
   messagingSenderId: "481115138978",
   appId: "1:481115138978:web:15ce104836ff594f6360fb"
 };
+export const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const db:Firestore=getFirestore();
+const auth:Auth=getAuth(app);
+export const storage:FirebaseStorage=getStorage();
+
+export  {auth,db};

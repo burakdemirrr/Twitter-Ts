@@ -3,10 +3,10 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 // Define a type for the slice state
 interface User {
-  email: number,
-  id: number,
-  name: string,
-  photoURL: string,
+  email?: string |null,
+  id?: string |null,
+  name?: string |null,
+  photoURL?: string |null,
 }
 
 // Define the initial state using that type

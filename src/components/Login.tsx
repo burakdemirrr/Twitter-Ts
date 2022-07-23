@@ -1,9 +1,25 @@
-import React from 'react'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import React, { FormEvent, useState } from 'react'
 import Modal from "react-modal"
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { app } from '../firebase/firebase';
+import { login } from '../redux/slice';
 
 
 const Login:React.FC  = () => {
   
+  //STATES
+  const [modalIsOpen, setIsOpen] = React.useState<boolean>(false);
+  const [email,setEmail]=useState<string>("");
+  const [password,setPassword]=useState<string>("");
+
+
+  const navigate=useNavigate();
+  const dispatch=useDispatch();
+
+
+  //MODAL FUNCTINOS
   const customStyles:any = {
   content: {
     top: '50%',
@@ -15,18 +31,30 @@ const Login:React.FC  = () => {
     borderRadius:"25px",
   },
 };
-  const [modalIsOpen, setIsOpen] = React.useState<boolean>(false);
-
+  
   function openModal() {
     setIsOpen(true);
   }
-
   function afterOpenModal() {
   }
-
   function closeModal() {
     setIsOpen(false);
+  }  
+
+  const auth=getAuth(app);
+  
+  const logintoApp=(e:FormEvent)=>{
+    e.preventDefault();
+    signInWithEmailAndPassword(auth,email,password)
+    .then((userAuth)=>{
+      dispatch(login({
+        email:userAuth.user.email,
+        id:userAuth.user.uid,
+      }))
+      navigate("/home")
+    }).catch((err)=>alert(err))
   }
+
 
   return (
     <div>
@@ -74,25 +102,26 @@ const Login:React.FC  = () => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div className='flex flex-col  h-[600px] rounded-xl w-[550px] px-12'>
+        <form onSubmit={logintoApp} className='flex flex-col  h-[600px] rounded-xl w-[550px] px-12'>
           <img className='w-8 mb-6' src="https://www.iics.k12.tr/wp-content/uploads/2019/07/twitter-logo-png-twitter-logo.png" alt="Twitter logo" />
           <h3 className='text-3xl mb-7 font-bold'>Twitter'a giriş yap</h3>
 
           <input type="text" className='h-14 border-2 border-gray-300 px-2 mt-2 rounded-md
            focus:outline-none focus:border-sky-500 focus:ring-5 focus:ring-sky-500 placeholder:text-slate-700
-          ' placeholder='Kullanıcı Adı'  />
+          'value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='Kullanıcı Adı'  />
 
           <input type="password" className='h-14 border-2 border-gray-300  px-2 rounded-md mt-5  
            focus:outline-none focus:border-1 focus:border-sky-500 focus:ring-5 focus:ring-sky-500 placeholder:text-slate-700
-          ' placeholder='Şifre' />
+          ' value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Şifre' />
           <p className='mt-1  text-blue-700 text-[.8rem] cursor-pointer  hover:underline underline-offset-1 ml-2'>Şifreni mi Unuttun?</p>
 
-          <button className='bg-gray-400 text-white font-bold
-          h-14 rounded-3xl mt-48
-          '>Giriş Yap</button>       
+          <button disabled={!email} className='bg-blue-500 text-white font-bold
+          h-14 rounded-3xl mt-48 hover:bg-blue-700'
+          
+          >Giriş Yap</button>       
 
           <p className='mt-6 text-gray-500'>Henüz bir hesabın yok mu? <span className='text-blue-600 cursor-pointer'>Kaydol</span></p>   
-        </div>
+        </form>
       </Modal>
       </main>
     </div>
