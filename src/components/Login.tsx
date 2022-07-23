@@ -1,9 +1,9 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, OAuthCredential, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import React, { FormEvent, useState } from 'react'
 import Modal from "react-modal"
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { app } from '../firebase/firebase';
+import { useAppDispatch } from '../redux/hooks';
 import { login } from '../redux/slice';
 
 
@@ -14,10 +14,9 @@ const Login:React.FC  = () => {
   const [email,setEmail]=useState<string>("");
   const [password,setPassword]=useState<string>("");
 
-
   const navigate=useNavigate();
-  const dispatch=useDispatch();
-
+  const dispatch=useAppDispatch();
+  const provider = new GoogleAuthProvider();
 
   //MODAL FUNCTINOS
   const customStyles:any = {
@@ -31,7 +30,6 @@ const Login:React.FC  = () => {
     borderRadius:"25px",
   },
 };
-  
   function openModal() {
     setIsOpen(true);
   }
@@ -42,7 +40,39 @@ const Login:React.FC  = () => {
   }  
 
   const auth=getAuth(app);
+
+  //LOGIN WITH GOOGLE
+  const loginwithGoogle=(e:FormEvent)=>{
+  e.preventDefault();
+  signInWithPopup(auth, provider)
+  .then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential:OAuthCredential | any = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+
+    dispatch(login({
+      email:user.email,
+      id:user.uid,
+      name:user.displayName,
+      photoURL:user.photoURL,
+    }))
+    navigate("/home")
+    // ...
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  });
+  }
   
+  //LOGIN WITH EMAIL AND PASSWORD
   const logintoApp=(e:FormEvent)=>{
     e.preventDefault();
     signInWithEmailAndPassword(auth,email,password)
@@ -54,8 +84,6 @@ const Login:React.FC  = () => {
       navigate("/home")
     }).catch((err)=>alert(err))
   }
-
-
   return (
     <div>
       
@@ -70,7 +98,7 @@ const Login:React.FC  = () => {
 
           <h6 className='text-4xl font-bold tracking-normal mt-10'>Twitter'a bugün katıl.</h6>
 
-          <button className='flex items-center border-2 max-w-fit rounded-[24px] p-1 px-14 mt-10 hover:bg-slate-100'>
+          <button  onClick={loginwithGoogle} className='flex items-center border-2 max-w-fit rounded-[24px] p-1 px-14 mt-10 hover:bg-slate-100'>
             <img className='w-7 mr-2' src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="" />
             Google ile kaydolun
             </button>
@@ -116,7 +144,7 @@ const Login:React.FC  = () => {
           <p className='mt-1  text-blue-700 text-[.8rem] cursor-pointer  hover:underline underline-offset-1 ml-2'>Şifreni mi Unuttun?</p>
 
           <button disabled={!email} className='bg-blue-500 text-white font-bold
-          h-14 rounded-3xl mt-48 hover:bg-blue-700'
+          h-14 rounded-3xl mt-48 hover:bg-blue-700 cursor-pointer'
           
           >Giriş Yap</button>       
 
