@@ -5,7 +5,7 @@ import { HomeIcon,HashtagIcon,BellIcon,MailOpenIcon,BookmarkIcon,ClipboardIcon,U
 const Sidebar = () => {
   return (
     <div className='flex flex-col '>
-        <img className='w-10' src="https://www.iics.k12.tr/wp-content/uploads/2019/07/twitter-logo-png-twitter-logo.png" alt="" />
+        <img className='w-8 ml-3 mt-2' src="https://www.iics.k12.tr/wp-content/uploads/2019/07/twitter-logo-png-twitter-logo.png" alt="" />
         <ul>
           <Icon Icon={HomeIcon} title="Anasayfa"/>
           <Icon Icon={HashtagIcon} title="Keşfet"/>
