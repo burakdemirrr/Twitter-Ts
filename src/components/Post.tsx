@@ -9,7 +9,7 @@ const Post = () => {
       <div>
         {
           twitler.map((item)=>(
-            <div key={item.id} className="flex flex-col text-left  p-5">
+            <div key={item.id} className="flex flex-col text-left  p-5 ">
                 <div className='flex items-center'>
                   <img className='w-12 rounded-full' src={item.userImg} alt="" />
                   <div className='ml-2'>
@@ -20,7 +20,7 @@ const Post = () => {
 
               <p className='mt-3'>{item.tweet}</p>
 
-              <div className='flex items-center justify-between  p-3'>
+              <div className='flex items-center justify-between  p-3 px-1'>
                 <ChatIcon className='w-5 cursor-pointer text-gray-600 hover:text-blue-400'/>
                 <SwitchVerticalIcon className='w-5 cursor-pointer text-gray-600 hover:text-green-600'/>
                 <HeartIcon className='w-5 cursor-pointer text-gray-600 hover:text-red-600'/>

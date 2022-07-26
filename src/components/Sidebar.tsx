@@ -4,7 +4,8 @@ import { HomeIcon,HashtagIcon,BellIcon,MailOpenIcon,BookmarkIcon,ClipboardIcon,U
 
 const Sidebar = () => {
   return (
-    <div className='flex flex-col mr-4'>
+    <div className='relative'>
+    <div className='sticky top-0 flex flex-col mr-4' >
         <img className='w-8 ml-3 mt-2' src="https://www.iics.k12.tr/wp-content/uploads/2019/07/twitter-logo-png-twitter-logo.png" alt="" />
         <ul>
           <Icon Icon={HomeIcon} title="Anasayfa"/>
@@ -17,7 +18,7 @@ const Sidebar = () => {
           <Icon Icon={DotsHorizontalIcon} title="Daha fazla"/>
         </ul>
         <button className='flex w-56 text-white text-[1.1rem] h-14 rounded-full bg-[#31a4f0] font-bold items-center justify-center'>Tweetle</button>
-    </div>
+    </div></div>
   )
 }
 
