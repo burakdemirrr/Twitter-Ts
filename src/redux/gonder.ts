@@ -5,7 +5,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 export interface Tweet {
   tweet?: string |null,
   name?: string |null,
-  userImg?: string |null,
+  userImg?: any |null,
   timestamp?: Date |null,
   id?: string |null,
 }
