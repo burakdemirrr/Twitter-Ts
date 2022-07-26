@@ -1,14 +1,19 @@
-import { query } from 'express';
-import { collection, onSnapshot, orderBy } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
-import { db } from '../firebase/firebase';
+import { useAppSelector } from '../redux/hooks';
 
 const Post = () => {
-    const [tweet,setTweets]=useState<string[]>([]);
+  const twitler=useAppSelector(state=>state.tweet.init);
 
-    
   return (
-    <div>Post</div>
+      <div>
+        {
+          twitler.map((item)=>(
+            <div key={item.id}>
+              <h1>{item.tweet}</h1>
+            </div>
+          ))
+        }
+      </div>
   )
 }
 

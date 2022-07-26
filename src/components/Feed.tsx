@@ -4,7 +4,7 @@ import InputField from './InputField'
 import Post from './Post'
 const Feed = () => {
   return (
-    <div className='flex flex-col flex-1 min-h-screen border-x border-gray-100 p-4 px-0 '>
+    <div className='flex flex-col flex-1 min-h-screen border-x border-gray-100 p-1 px-0 '>
         <InputField/>
         <Post/>
     </div>
